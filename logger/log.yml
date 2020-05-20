@@ -1,0 +1,80 @@
+
+version: 1
+
+loggers:
+
+  root:
+    level: DEBUG
+    handlers: [console]
+
+  debug_logger:
+    level: DEBUG
+    handlers: [console, debug]
+    propagate: no
+
+  info_logger:
+    level: INFO
+    handlers: [info]
+    propagate: no
+
+  error_logger:
+    level: ERROR
+    handlers: [error]
+    propagate: no
+
+  gunicorn.access:
+    level: INFO
+    handlers: [gunicorn_access]
+    propagate: no
+
+formatters:
+
+  detail:
+    format: '%(asctime)s - %(name)s %(process)d:%(thread)d - [%(funcName)s: %(filename)s,%(lineno)d] - %(levelname)s - %(message)s'
+
+handlers:
+
+  console:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: detail
+
+  debug:
+    class: logger.log.SafeRotatingFileHandler
+    level: DEBUG
+    formatter: detail
+    filename: 'logs/debug.log'
+    when: 'midnight'
+    interval: 1
+    backupCount: 3
+    encoding: 'utf8'
+
+  info:
+    class: logger.log.SafeRotatingFileHandler
+    level: INFO
+    formatter: detail
+    filename: 'logs/info.log'
+    when: 'midnight'
+    interval: 1
+    backupCount: 3
+    encoding: 'utf8'
+
+  error:
+    class: logger.log.SafeRotatingFileHandler
+    level: ERROR
+    formatter: detail
+    filename: 'logs/error.log'
+    when: 'midnight'
+    interval: 1
+    backupCount: 3
+    encoding: 'utf8'
+
+  gunicorn_access:
+    class: logger.log.SafeRotatingFileHandler
+    level: INFO
+    formatter: detail
+    filename: 'logs/access.log'
+    when: 'midnight'
+    interval: 1
+    backupCount: 3
+    encoding: 'utf8'
